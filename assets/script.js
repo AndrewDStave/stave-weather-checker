@@ -10,34 +10,44 @@ cityForm.addEventListener("submit", function (event) {
   const cityName = cityInput.value.trim();
   if (cityName === "") return;
 
-  var APIKey = de499e2ee729b13656959965fb76984a
+  const apiKey = 'de499e2ee729b13656959965fb76984a';
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}`;
 
-  // Call a function to fetch weather data from an API based on the cityName
-  // Once you receive the data, update the currentWeatherSection and forecastSection
-  // with the appropriate information
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      const weatherDescription = data.weather[0].description;
+      const temperature = data.main.temp;
+      const humidity = data.main.humidity;
+
+      document.getElementById("weatherDescription").textContent = `Weather: ${weatherDescription}`;
+      document.getElementById("temperature").textContent = `Temperature: ${temperature}°F`;
+      document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
+    })
 
   citySearchHistory(cityName);
 });
-
-function citySearchHistory(cityName) {
-  if (searchHistory.includes(cityName)) return;
-  searchHistory.push(cityName);
-  renderSearchHistory();
-}
-
-function renderSearchHistory() {
-  searchHistorySection.innerHTML = "";
-  const ul = document.createElement("ul");
-  searchHistory.forEach((city) => {
-    const li = document.createElement("li");
-    const button = document.createElement("button");
-    button.textContent = city;
-    button.addEventListener("click", function () {
-      cityInput.value = city;
-      cityForm.dispatchEvent(new Event("submit"));
+  
+  function citySearchHistory(cityName) {
+    if (searchHistory.includes(cityName)) return;
+    searchHistory.push(cityName);
+    showSearchHistory();
+  }
+  
+  function showSearchHistory() {
+    searchHistorySection.innerHTML = "";
+    const ul = document.createElement("ul");
+    searchHistory.forEach((city) => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.textContent = city;
+      button.addEventListener("click", function () {
+        cityInput.value = city;
+        cityForm.dispatchEvent(new Event("submit"));
+      });
+      li.appendChild(button);
+      ul.appendChild(li);
     });
-    li.appendChild(button);
-    ul.appendChild(li);
-  });
-  searchHistorySection.appendChild(ul);
-}
+    searchHistorySection.appendChild(ul);
+  }
+  
