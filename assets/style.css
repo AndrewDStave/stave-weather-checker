@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    background-color: #2196F3;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  form {
+    margin-top: 10px;
+  }
+  
+  main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  section {
+    flex-basis: 48%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  #searchHistory {
+    flex-basis: 100%;
+  }
+  
+  #searchHistory ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #searchHistory li {
+    margin-bottom: 5px;
+  }
+  
+  #searchHistory li button {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  #searchHistory li button:hover {
+    background-color: #d32f2f;
+  }
+  
+  @media (max-width: 600px) {
+    section {
+      flex-basis: 100%;
+    }
+  }
+  
