@@ -3,16 +3,12 @@ body {
   }
   
   header {
-    background-color: #2196F3;
+    background-color: #1013bb;
     color: #fff;
     padding: 10px;
     text-align: center;
   }
-  
-  form {
-    margin-top: 10px;
-  }
-  
+
   main {
     display: flex;
     flex-wrap: wrap;
@@ -21,19 +17,10 @@ body {
   }
   
   section {
-    flex-basis: 48%;
+    flex-basis: 47%;
     margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ddd;
-  }
-  
-  #searchHistory {
-    flex-basis: 100%;
-  }
-  
-  #searchHistory ul {
-    list-style: none;
-    padding: 0;
   }
   
   #searchHistory li {
@@ -41,7 +28,7 @@ body {
   }
   
   #searchHistory li button {
-    background-color: #f44336;
+    background-color: #1013bb;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -49,11 +36,6 @@ body {
   }
   
   #searchHistory li button:hover {
-    background-color: #d32f2f;
+    background-color: #0e108b;
   }
   
-  @media (max-width: 600px) {
-    section {
-      flex-basis: 100%;
-    }
-  }
