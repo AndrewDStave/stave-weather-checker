@@ -17,16 +17,19 @@ cityForm.addEventListener("submit", function (event) {
     .then((response) => response.json())
     .then((data) => {
       const weatherDescription = data.weather[0].description;
-      const temperature = data.main.temp;
+      const temperatureKelvin = data.main.temp;
+      const temperatureCelsius = temperatureKelvin - 273.15;
+      const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
       const humidity = data.main.humidity;
 
       document.getElementById("weatherDescription").textContent = `Weather: ${weatherDescription}`;
-      document.getElementById("temperature").textContent = `Temperature: ${temperature}°F`;
+      document.getElementById("temperature").textContent = `Temperature: ${temperatureFahrenheit.toFixed(2)}°F (${temperatureCelsius.toFixed(2)}°C)`;
       document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
-    })
+    });
 
   citySearchHistory(cityName);
 });
+
   
   function citySearchHistory(cityName) {
     if (searchHistory.includes(cityName)) return;
