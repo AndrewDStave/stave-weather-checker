@@ -15,46 +15,52 @@ cityForm.addEventListener("submit", function (event) {
   const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(cityName)}&appid=${apiKey}`;
 
   //GOT MAJOR HELP FROM A FAMILY MEMBER ON THESE COMING SECTIONS SPECIFICALLY ON CONVERTING TO FAHRENHEIT
-fetch(apiUrl)
-.then((response) => response.json())
-.then((data) => {
-  const weatherDescription = data.weather[0].description;
+  fetch(apiUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    const windSpeedMeters = data.wind.speed;
   const temperatureKelvin = data.main.temp;
   const humidity = data.main.humidity;
 
   //Converts kelvin to fahrenheit
   const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
   const temperatureCelsius = temperatureKelvin - 273.15;
+
+  //Converts meters per second to mph
+  const windSpeedMph = windSpeedMeters * 2.237;
   
   console.log("Temperature in Fahrenheit:", temperatureFahrenheit);
   console.log("Temperature in Celsius:", temperatureCelsius); //only haven't removed this line as it bugs when i remove it
 
-  document.getElementById("weatherDescription").textContent = `Weather: ${weatherDescription}`;
+  document.getElementById("windSpeed").textContent = `Wind Speed: ${windSpeedMph.toFixed(2)} mph`;
   document.getElementById("temperature").textContent = `Temperature: ${temperatureFahrenheit.toFixed(2)}°F`;
   document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
 });
 
-  fetch(forecastUrl)
+fetch(forecastUrl)
     .then((response) => response.json())
     .then((data) => {
       const forecastList = document.getElementById("forecastList");
+
+      forecastList.innerHTML = "";
 
       const forecasts = data.list;
       const fiveDayForecasts = forecasts.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
 
       fiveDayForecasts.forEach((forecast) => {
         const date = new Date(forecast.dt_txt);
-        const weatherDescription = forecast.weather[0].description;
         const temperatureKelvin = forecast.main.temp;
         const temperatureCelsius = temperatureKelvin - 273.15;
         const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
         const humidity = forecast.main.humidity;
+        const windSpeedMetersPerSec = forecast.wind.speed;
+        const windSpeedMph = windSpeedMetersPerSec * 2.237;
 
       //Got help learning how to accurately put HTML in my JS
         const forecastItem = document.createElement("div");
         forecastItem.innerHTML = `
           <p>Date: ${date.toDateString()}</p>
-          <p>Weather: ${weatherDescription}</p>
+          <p>Wind Speed: ${windSpeedMph.toFixed(2)} mph</p>
           <p>Temperature: ${temperatureFahrenheit.toFixed(2)}°F</p>
           <p>Humidity: ${humidity}%</p>
         `;
