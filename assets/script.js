@@ -47,6 +47,7 @@ fetch(forecastUrl)
       const forecasts = data.list;
       const fiveDayForecasts = forecasts.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
 
+      //Converts most to imperial
       fiveDayForecasts.forEach((forecast) => {
         const date = new Date(forecast.dt_txt);
         const temperatureKelvin = forecast.main.temp;
