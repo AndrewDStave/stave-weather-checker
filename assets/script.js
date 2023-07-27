@@ -5,31 +5,34 @@ const forecastSection = document.getElementById("forecast");
 const searchHistorySection = document.getElementById("searchHistory");
 let searchHistory = [];
 
-// ... your existing code
-
 cityForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const cityName = cityInput.value.trim();
   if (cityName === "") return;
 
   const apiKey = 'de499e2ee729b13656959965fb76984a';
-  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}`;
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}`;
   const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(cityName)}&appid=${apiKey}`;
 
-  //GOT MAJOR HELP FROM A FAMILY MEMBER ON THESE COMING SECTIONS SPECIFICALLY ON CONVERTING TO FARENHEIT TO CELSIUS
-  fetch(currentWeatherUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      const weatherDescription = data.weather[0].description;
-      const temperatureKelvin = data.main.temp;
-      const temperatureCelsius = temperatureKelvin - 273.15;
-      const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
-      const humidity = data.main.humidity;
+  //GOT MAJOR HELP FROM A FAMILY MEMBER ON THESE COMING SECTIONS SPECIFICALLY ON CONVERTING TO FAHRENHEIT
+fetch(apiUrl)
+.then((response) => response.json())
+.then((data) => {
+  const weatherDescription = data.weather[0].description;
+  const temperatureKelvin = data.main.temp;
+  const humidity = data.main.humidity;
 
-      document.getElementById("weatherDescription").textContent = `Weather: ${weatherDescription}`;
-      document.getElementById("temperature").textContent = `Temperature: ${temperatureFahrenheit.toFixed(2)}°F (${temperatureCelsius.toFixed(2)}°C)`;
-      document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
-    });
+  //Converts kelvin to fahrenheit
+  const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
+  const temperatureCelsius = temperatureKelvin - 273.15;
+  
+  console.log("Temperature in Fahrenheit:", temperatureFahrenheit);
+  console.log("Temperature in Celsius:", temperatureCelsius); //only haven't removed this line as it bugs when i remove it
+
+  document.getElementById("weatherDescription").textContent = `Weather: ${weatherDescription}`;
+  document.getElementById("temperature").textContent = `Temperature: ${temperatureFahrenheit.toFixed(2)}°F`;
+  document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
+});
 
   fetch(forecastUrl)
     .then((response) => response.json())
@@ -37,7 +40,7 @@ cityForm.addEventListener("submit", function (event) {
       const forecastList = document.getElementById("forecastList");
 
       const forecasts = data.list;
-      const fiveDayForecasts = forecasts.filter((forecast) => forecast.dt_txt.includes("12:00:00")); // Get only one forecast per day
+      const fiveDayForecasts = forecasts.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
 
       fiveDayForecasts.forEach((forecast) => {
         const date = new Date(forecast.dt_txt);
@@ -47,11 +50,12 @@ cityForm.addEventListener("submit", function (event) {
         const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
         const humidity = forecast.main.humidity;
 
+      //Got help learning how to accurately put HTML in my JS
         const forecastItem = document.createElement("div");
         forecastItem.innerHTML = `
           <p>Date: ${date.toDateString()}</p>
           <p>Weather: ${weatherDescription}</p>
-          <p>Temperature: ${temperatureFahrenheit.toFixed(2)}°F (${temperatureCelsius.toFixed(2)}°C)</p>
+          <p>Temperature: ${temperatureFahrenheit.toFixed(2)}°F</p>
           <p>Humidity: ${humidity}%</p>
         `;
 
@@ -84,4 +88,3 @@ cityForm.addEventListener("submit", function (event) {
     });
     searchHistorySection.appendChild(ul);
   }
-  
